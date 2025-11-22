@@ -1,99 +1,174 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Camera, Sparkles } from "lucide-react";
+import { Camera, Zap, TrendingUp, Award } from "lucide-react";
 
 export const Hero = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
-  const beforeOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const afterOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
-
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const floatingAnimation = {
+    y: [0, -20, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: "easeInOut" as const,
+    },
+  };
+
+  const foodEmojis = ["🍕", "🍔", "🥗", "🍎", "🥑", "🍜", "🌮", "🍱"];
+
   return (
-    <div ref={containerRef} id="hero" className="relative min-h-[150vh]">
-      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-        <motion.div style={{ opacity, scale }} className="absolute inset-0 flex items-center justify-center">
-          
-          {/* Before State - Unhealthy/Confusion */}
+    <div id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/10">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {foodEmojis.map((emoji, i) => (
           <motion.div
-            style={{ opacity: beforeOpacity }}
-            className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-destructive/10 to-muted/30"
+            key={i}
+            className="absolute text-4xl opacity-10"
+            initial={{ 
+              x: Math.random() * window.innerWidth, 
+              y: Math.random() * window.innerHeight 
+            }}
+            animate={{
+              y: [0, -30, 0],
+              rotate: [0, 10, -10, 0],
+            }}
+            transition={{
+              duration: 4 + i,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.5,
+            }}
+            style={{
+              left: `${(i * 12) % 100}%`,
+              top: `${(i * 15) % 80}%`,
+            }}
           >
-            <div className="text-center space-y-6 px-4 blur-sm">
-              <h2 className="text-4xl md:text-6xl font-bold text-destructive opacity-50">
-                Confused About Calories?
-              </h2>
-              <div className="flex flex-wrap justify-center gap-4 opacity-40">
-                <div className="bg-card p-4 rounded-lg border border-border">❓ 500 cal?</div>
-                <div className="bg-card p-4 rounded-lg border border-border">❓ 800 cal?</div>
-                <div className="bg-card p-4 rounded-lg border border-border">❓ 1200 cal?</div>
-              </div>
-            </div>
+            {emoji}
           </motion.div>
-
-          {/* After State - Healthy/AI Clarity */}
-          <motion.div
-            style={{ opacity: afterOpacity }}
-            className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/20"
-          >
-            <div className="text-center space-y-8 px-4 max-w-4xl mx-auto">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring" }}
-              >
-                <Sparkles className="w-16 h-16 text-primary mx-auto mb-4" />
-              </motion.div>
-              
-              <h1 className="text-5xl md:text-7xl font-bold text-foreground">
-                Know What You Eat,
-                <br />
-                <span className="text-primary">Instantly.</span>
-              </h1>
-              
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-                AI-powered food recognition that shows calories, nutrition, and healthier alternatives in seconds.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button size="lg" className="rounded-full gap-2 text-lg px-8" onClick={() => scrollToSection("cta")}>
-                  <Camera className="w-5 h-5" />
-                  Try It Now
-                </Button>
-                <Button size="lg" variant="outline" className="rounded-full text-lg px-8" onClick={() => scrollToSection("how-it-works")}>
-                  See How It Works
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto mt-8">
-                <div className="bg-card/50 backdrop-blur-sm p-4 rounded-xl border border-border">
-                  <div className="text-3xl font-bold text-primary">1sec</div>
-                  <div className="text-sm text-muted-foreground">Food Scan</div>
-                </div>
-                <div className="bg-card/50 backdrop-blur-sm p-4 rounded-xl border border-border">
-                  <div className="text-3xl font-bold text-primary">100+</div>
-                  <div className="text-sm text-muted-foreground">Foods</div>
-                </div>
-                <div className="bg-card/50 backdrop-blur-sm p-4 rounded-xl border border-border">
-                  <div className="text-3xl font-bold text-primary">0-100</div>
-                  <div className="text-sm text-muted-foreground">Health Score</div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
+        ))}
       </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 py-20">
+        <div className="text-center space-y-8">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium">
+              <Zap className="w-4 h-4" />
+              AI-Powered Nutrition Analysis
+            </div>
+          </motion.div>
+
+          {/* Main Headline */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-foreground">
+              Snap. Analyze.
+              <br />
+              <span className="bg-gradient-to-r from-primary via-health-good to-primary bg-clip-text text-transparent">
+                Eat Smarter.
+              </span>
+            </h1>
+          </motion.div>
+
+          {/* Subheadline */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto"
+          >
+            Instantly know what's in your food with AI. Get calories, nutrition facts, and personalized health recommendations in seconds.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          >
+            <Button 
+              size="lg" 
+              className="rounded-full gap-2 text-lg px-10 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all"
+              onClick={() => scrollToSection("cta")}
+            >
+              <Camera className="w-5 h-5" />
+              Start Scanning
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="rounded-full text-lg px-10 h-14 border-2"
+              onClick={() => scrollToSection("how-it-works")}
+            >
+              How It Works
+            </Button>
+          </motion.div>
+
+          {/* Stats Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-16"
+          >
+            <motion.div
+              animate={floatingAnimation}
+              className="bg-card/80 backdrop-blur-xl p-6 rounded-2xl border border-border shadow-lg"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Zap className="w-6 h-6 text-primary" />
+                </div>
+                <div className="text-4xl font-bold text-foreground">1sec</div>
+              </div>
+              <div className="text-muted-foreground">Instant Recognition</div>
+            </motion.div>
+
+            <motion.div
+              animate={floatingAnimation}
+              transition={{ delay: 0.2 }}
+              className="bg-card/80 backdrop-blur-xl p-6 rounded-2xl border border-border shadow-lg"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-health-good/10 rounded-lg">
+                  <TrendingUp className="w-6 h-6 text-health-good" />
+                </div>
+                <div className="text-4xl font-bold text-foreground">100+</div>
+              </div>
+              <div className="text-muted-foreground">Foods Tracked</div>
+            </motion.div>
+
+            <motion.div
+              animate={floatingAnimation}
+              transition={{ delay: 0.4 }}
+              className="bg-card/80 backdrop-blur-xl p-6 rounded-2xl border border-border shadow-lg"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-secondary/10 rounded-lg">
+                  <Award className="w-6 h-6 text-secondary" />
+                </div>
+                <div className="text-4xl font-bold text-foreground">0-100</div>
+              </div>
+              <div className="text-muted-foreground">Health Score</div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Bottom Gradient Fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
     </div>
   );
 };
