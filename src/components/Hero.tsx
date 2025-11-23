@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Camera, Zap, TrendingUp, Award } from "lucide-react";
 import { useEffect, useRef } from "react";
+import saladBowl from "@/assets/salad-bowl.png";
 
 export const Hero = () => {
   const saladBowlRef = useRef<HTMLDivElement>(null);
@@ -36,13 +37,21 @@ export const Hero = () => {
 
   return (
     <div id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/10">
-      {/* Salad Bowl with Scroll Rotation */}
+      {/* Realistic Salad Bowl with Scroll Rotation */}
       <div 
         ref={saladBowlRef}
-        className="fixed right-8 top-1/2 -translate-y-1/2 z-20 text-[120px] opacity-20 pointer-events-none"
-        style={{ filter: 'drop-shadow(0 0 20px rgba(74, 222, 128, 0.3))' }}
+        className="absolute -right-32 top-1/2 -translate-y-1/2 z-20 pointer-events-none overflow-hidden"
+        style={{ width: '500px', height: '500px' }}
       >
-        🥗
+        <img 
+          src={saladBowl} 
+          alt="Fresh Salad Bowl" 
+          className="w-full h-full object-cover opacity-30"
+          style={{ 
+            filter: 'drop-shadow(0 0 40px rgba(74, 222, 128, 0.4)) brightness(1.1)',
+            clipPath: 'circle(50% at 50% 50%)'
+          }}
+        />
       </div>
 
       {/* Animated Background Elements */}
