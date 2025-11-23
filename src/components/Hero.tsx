@@ -1,13 +1,28 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Camera, Zap, TrendingUp, Award } from "lucide-react";
-import saladBowl from "@/assets/salad-bowl-3d.png";
+import { useEffect, useRef } from "react";
+import saladBowl from "@/assets/salad-bowl.png";
 
 export const Hero = () => {
+  const saladBowlRef = useRef<HTMLDivElement>(null);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      if (saladBowlRef.current) {
+        saladBowlRef.current.style.transform = `translateY(-50%) rotate(${scrollY * 0.3}deg)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const floatingAnimation = {
     y: [0, -20, 0],
@@ -22,28 +37,22 @@ export const Hero = () => {
 
   return (
     <div id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/10">
-      {/* 3D Salad Bowl with Auto Rotation */}
-      <motion.div 
-        className="absolute -right-32 top-1/2 -translate-y-1/2 z-20 pointer-events-none"
+      {/* Realistic Salad Bowl with Scroll Rotation */}
+      <div 
+        ref={saladBowlRef}
+        className="absolute -right-32 top-1/2 -translate-y-1/2 z-20 pointer-events-none overflow-hidden"
         style={{ width: '500px', height: '500px' }}
-        animate={{ 
-          rotate: 360 
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }}
       >
         <img 
           src={saladBowl} 
-          alt="3D Salad Bowl" 
-          className="w-full h-full object-contain opacity-40"
+          alt="Fresh Salad Bowl" 
+          className="w-full h-full object-cover opacity-30"
           style={{ 
-            filter: 'drop-shadow(0 10px 40px rgba(74, 222, 128, 0.4)) brightness(1.1)',
+            filter: 'drop-shadow(0 0 40px rgba(74, 222, 128, 0.4)) brightness(1.1)',
+            clipPath: 'circle(50% at 50% 50%)'
           }}
         />
-      </motion.div>
+      </div>
 
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
