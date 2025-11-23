@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Leaf } from "lucide-react";
+import { Leaf, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -43,9 +47,25 @@ export const Navbar = () => {
           </button>
         </div>
 
-        <Button onClick={() => scrollToSection("cta")} className="rounded-full">
-          Try It Free
-        </Button>
+        <div className="flex items-center gap-3">
+          {mounted && (
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="rounded-full border-border/50 hover:bg-accent/50 hover:border-primary/30 transition-all duration-300"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5 text-foreground transition-transform rotate-0 scale-100" />
+              ) : (
+                <Moon className="h-5 w-5 text-foreground transition-transform rotate-0 scale-100" />
+              )}
+            </Button>
+          )}
+          <Button onClick={() => scrollToSection("cta")} className="rounded-full">
+            Try It Free
+          </Button>
+        </div>
       </div>
     </nav>
   );
