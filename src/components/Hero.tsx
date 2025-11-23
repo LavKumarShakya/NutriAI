@@ -1,12 +1,27 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Camera, Zap, TrendingUp, Award } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 export const Hero = () => {
+  const saladBowlRef = useRef<HTMLDivElement>(null);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      if (saladBowlRef.current) {
+        saladBowlRef.current.style.transform = `translateY(-50%) rotate(${scrollY * 0.3}deg)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const floatingAnimation = {
     y: [0, -20, 0],
@@ -21,6 +36,15 @@ export const Hero = () => {
 
   return (
     <div id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/10">
+      {/* Salad Bowl with Scroll Rotation */}
+      <div 
+        ref={saladBowlRef}
+        className="fixed right-8 top-1/2 -translate-y-1/2 z-20 text-[120px] opacity-20 pointer-events-none"
+        style={{ filter: 'drop-shadow(0 0 20px rgba(74, 222, 128, 0.3))' }}
+      >
+        🥗
+      </div>
+
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {foodEmojis.map((emoji, i) => (
