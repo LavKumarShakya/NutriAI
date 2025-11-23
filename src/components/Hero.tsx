@@ -21,7 +21,7 @@ export const Hero = () => {
   const foodEmojis = ["🍕", "🍔", "🥗", "🍎", "🥑", "🍜", "🌮", "🍱"];
 
   return (
-    <div id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/10">
+    <div id="hero" className="relative mt-[-80px] min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/10">
       {/* Realistic Salad Bowl with Slow Rotation */}
       <motion.div 
         className="absolute -right-64 top-1/2 -translate-y-1/2 z-20 pointer-events-none overflow-hidden"
