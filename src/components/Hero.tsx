@@ -18,14 +18,25 @@ export const Hero = () => {
     },
   };
 
-  const foodEmojis = ["🍕", "🍔", "🥗", "🍎", "🥑", "🍜", "🌮", "🍱"];
+  const backgroundElements = [
+    { emoji: "🍕", top: "10%", left: "5%", delay: 0 },
+    { emoji: "🥗", top: "30%", left: "15%", delay: 1.5 },
+    { emoji: "🍎", top: "55%", left: "8%", delay: 3 },
+    { emoji: "🥑", top: "80%", left: "12%", delay: 0.5 },
+    { emoji: "🍔", top: "15%", left: "45%", delay: 2 },
+    { emoji: "🍜", top: "45%", left: "35%", delay: 4 },
+    { emoji: "🌮", top: "70%", left: "25%", delay: 1 },
+    { emoji: "🍱", top: "25%", left: "55%", delay: 2.5 },
+    { emoji: "🍇", top: "65%", left: "4%", delay: 3.5 },
+    { emoji: "🥦", top: "40%", left: "10%", delay: 1 },
+  ];
 
   return (
     <div id="hero" className="relative top-[-80px] min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/10">
       {/* Realistic Salad Bowl with Slow Rotation */}
-      <motion.div 
-        className="absolute -right-64 top-1/2 -translate-y-1/2 z-20 pointer-events-none overflow-hidden"
-        style={{ width: '500px', height: '500px' }}
+      <motion.div
+        className="absolute -right-64 top-1/2 z-20 pointer-events-none overflow-hidden"
+        style={{ width: '600px', height: '600px', y: '-40%' }}
         animate={{ rotate: 360 }}
         transition={{
           duration: 12,
@@ -33,11 +44,11 @@ export const Hero = () => {
           ease: "linear"
         }}
       >
-        <img 
-          src={saladBowl} 
-          alt="Fresh Salad Bowl" 
+        <img
+          src={saladBowl}
+          alt="Fresh Salad Bowl"
           className="w-full h-full object-cover opacity-30"
-          style={{ 
+          style={{
             filter: 'drop-shadow(0 0 40px rgba(74, 222, 128, 0.4)) brightness(1.1)',
             clipPath: 'circle(50% at 50% 50%)'
           }}
@@ -46,15 +57,17 @@ export const Hero = () => {
 
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {foodEmojis.map((emoji, i) => (
+        {backgroundElements.map((el, i) => (
           <motion.div
             key={i}
             className="absolute text-4xl opacity-10"
-            initial={{ 
-              x: Math.random() * window.innerWidth, 
-              y: Math.random() * window.innerHeight 
+            initial={{
+              opacity: 0,
+              scale: 0.5
             }}
             animate={{
+              opacity: 0.1,
+              scale: 1,
               y: [0, -30, 0],
               rotate: [0, 10, -10, 0],
             }}
@@ -62,14 +75,14 @@ export const Hero = () => {
               duration: 4 + i,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.5,
+              delay: el.delay,
             }}
             style={{
-              left: `${(i * 12) % 100}%`,
-              top: `${(i * 15) % 80}%`,
+              left: el.left,
+              top: el.top,
             }}
           >
-            {emoji}
+            {el.emoji}
           </motion.div>
         ))}
       </div>
@@ -121,17 +134,17 @@ export const Hero = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="rounded-full gap-2 text-lg px-10 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all"
               onClick={() => scrollToSection("cta")}
             >
               <Camera className="w-5 h-5" />
               Start Scanning
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
+            <Button
+              size="lg"
+              variant="outline"
               className="rounded-full text-lg px-10 h-14 border-2"
               onClick={() => scrollToSection("how-it-works")}
             >
