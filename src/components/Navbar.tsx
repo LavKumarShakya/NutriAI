@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Leaf, Moon, Sun } from "lucide-react";
+import { Leaf, Moon, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMounted(true);
@@ -27,7 +29,7 @@ export const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection("hero")}>
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
           <Leaf className="w-6 h-6 text-primary" />
           <span className="text-xl font-bold text-foreground">NutriAI</span>
         </div>
@@ -49,18 +51,28 @@ export const Navbar = () => {
 
         <div className="flex items-center gap-3">
           {mounted && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="rounded-full border-border/50 hover:bg-accent/50 hover:border-primary/30 transition-all duration-300"
-            >
-              {theme === "dark" ? (
-                <Sun className="h-5 w-5 text-foreground transition-transform rotate-0 scale-100" />
-              ) : (
-                <Moon className="h-5 w-5 text-foreground transition-transform rotate-0 scale-100" />
-              )}
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="rounded-full border-border/50 hover:bg-accent/50 hover:border-primary/30 transition-all duration-300"
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5 text-foreground transition-transform rotate-0 scale-100" />
+                ) : (
+                  <Moon className="h-5 w-5 text-foreground transition-transform rotate-0 scale-100" />
+                )}
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate("/profile")}
+                className="rounded-full border-border/50 hover:bg-accent/50 hover:border-primary/30 transition-all duration-300"
+              >
+                <User className="h-5 w-5 text-foreground" />
+              </Button>
+            </>
           )}
           <Button onClick={() => scrollToSection("cta")} className="rounded-full">
             Try It Free
