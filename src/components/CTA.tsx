@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Camera, Sparkles } from "lucide-react";
 
@@ -13,25 +14,24 @@ export const CTA = () => {
           className="bg-card/50 backdrop-blur-lg border border-border rounded-3xl p-12 shadow-2xl"
         >
           <Sparkles className="w-16 h-16 text-primary mx-auto mb-6" />
-          
+
           <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-4">
             Start Your Healthy
             <br />
             <span className="text-primary">Journey Today</span>
           </h2>
-          
+
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             No credit card required. No confusing forms. Just snap a photo and get instant guidance.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-            <Button size="lg" className="rounded-full gap-2 text-lg px-8 py-6">
-              <Camera className="w-6 h-6" />
-              Try AI Food Scanner
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-full text-lg px-8 py-6">
-              Watch Demo Video
-            </Button>
+            <Link to="/scan">
+              <Button size="lg" className="rounded-full gap-2 text-lg px-8 py-6">
+                <Camera className="w-6 h-6" />
+                Try AI Food Scanner
+              </Button>
+            </Link>
           </div>
 
           <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">

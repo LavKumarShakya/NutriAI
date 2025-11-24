@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Camera, Upload, X, Sparkles, Activity, Utensils, Flame, Info, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
@@ -10,6 +11,7 @@ const FoodScan = () => {
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const [additionalInfo, setAdditionalInfo] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +33,7 @@ const FoodScan = () => {
       const response = await fetch("http://localhost:5000/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image }),
+        body: JSON.stringify({ image, additionalInfo }),
       });
 
       const data = await response.json();
@@ -48,6 +50,7 @@ const FoodScan = () => {
   const resetScan = () => {
     setImage(null);
     setResult(null);
+    setAdditionalInfo("");
   };
 
   return (
@@ -171,9 +174,21 @@ const FoodScan = () => {
                       className="bg-card/80 backdrop-blur-xl border border-border rounded-3xl p-8 shadow-xl"
                     >
                       <h2 className="text-3xl font-bold mb-2">Ready to Analyze?</h2>
-                      <p className="text-muted-foreground mb-8 text-lg">
+                      <p className="text-muted-foreground mb-6 text-lg">
                         Our AI will identify the food, calculate calories, and breakdown nutrition facts.
                       </p>
+
+                      <div className="mb-6">
+                        <label className="block text-sm font-medium mb-2 text-muted-foreground">
+                          Additional Context (Optional)
+                        </label>
+                        <Textarea
+                          placeholder="E.g., Extra cheese inside, cooked with olive oil..."
+                          value={additionalInfo}
+                          onChange={(e) => setAdditionalInfo(e.target.value)}
+                          className="bg-secondary/50 border-border/50 resize-none h-24"
+                        />
+                      </div>
 
                       <Button
                         onClick={handleAnalyze}
@@ -208,8 +223,8 @@ const FoodScan = () => {
                             <h2 className="text-3xl font-bold text-foreground capitalize">{result.food_name || "Unknown Food"}</h2>
                           </div>
                           <div className={`px-4 py-2 rounded-full font-bold text-lg ${(result.health_score || 0) >= 70 ? 'bg-green-500/10 text-green-500' :
-                            (result.health_score || 0) >= 40 ? 'bg-yellow-500/10 text-yellow-500' :
-                              'bg-red-500/10 text-red-500'
+                              (result.health_score || 0) >= 40 ? 'bg-yellow-500/10 text-yellow-500' :
+                                'bg-red-500/10 text-red-500'
                             }`}>
                             {result.health_score || 0}/100 Score
                           </div>

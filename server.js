@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 
 app.post('/analyze', async (req, res) => {
     try {
-        const { image } = req.body;
+        const { image, additionalInfo } = req.body;
         if (!image) {
             return res.status(400).json({ error: 'No image provided' });
         }
@@ -34,6 +34,7 @@ app.post('/analyze', async (req, res) => {
 
         const prompt = `
     Analyze this food image and provide nutritional information.
+    ${additionalInfo ? `User provided additional context: "${additionalInfo}". Take this into account.` : ""}
     Return ONLY a valid JSON object with the following structure:
     {
         "food_name": "Name of the food",
