@@ -49,11 +49,10 @@ export const HealthScore = () => {
                 <button
                   key={index}
                   onClick={() => setSelectedFood(food)}
-                  className={`w-full text-left p-4 rounded-xl transition-all ${
-                    selectedFood.name === food.name
+                  className={`w-full text-left p-4 rounded-xl transition-all ${selectedFood.name === food.name
                       ? "bg-primary text-primary-foreground shadow-lg"
                       : "bg-secondary hover:bg-secondary/80"
-                  }`}
+                    }`}
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-medium">{food.name}</span>

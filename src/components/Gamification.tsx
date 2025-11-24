@@ -6,25 +6,21 @@ export const Gamification = () => {
     <section id="gamification" className="py-20 px-4">
       <div className="container mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Build <span className="text-primary">Healthy Habits</span> That Stick
           </h2>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl text-muted-foreground mb-2">
             Track progress, earn streaks, and see real improvements over time
+          </p>
+          <p className="text-sm text-primary/80 font-medium">
+            *Stats representing an average active user
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0 }}
             className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-6 hover:scale-105 transition-transform"
           >
             <Flame className="w-12 h-12 text-primary mb-4" />
@@ -33,10 +29,6 @@ export const Gamification = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
             className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-2xl p-6 hover:scale-105 transition-transform"
           >
             <Trophy className="w-12 h-12 text-accent mb-4" />
@@ -45,10 +37,6 @@ export const Gamification = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
             className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-6 hover:scale-105 transition-transform"
           >
             <Calendar className="w-12 h-12 text-primary mb-4" />
@@ -57,10 +45,6 @@ export const Gamification = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
             className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 rounded-2xl p-6 hover:scale-105 transition-transform"
           >
             <TrendingUp className="w-12 h-12 text-accent mb-4" />
@@ -70,9 +54,6 @@ export const Gamification = () => {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
           className="mt-12 bg-card border border-border rounded-3xl p-8"
         >
           <h3 className="text-2xl font-semibold text-foreground mb-6">Today's Log</h3>
