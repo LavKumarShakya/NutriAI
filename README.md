@@ -1,73 +1,83 @@
-# Welcome to your Lovable project
+# Clarity Bite - AI Nutrition Advisor
 
-## Project info
+Clarity Bite is an intelligent nutrition assistant that helps you track your diet by simply scanning your food. Powered by Google's Gemini AI, it analyzes food images to provide instant nutritional breakdowns, health scores, and personalized insights.
 
-**URL**: https://lovable.dev/projects/dae6270b-48e1-4bb9-b617-b28ec8c61f4f
+## 🚀 Features
 
-## How can I edit this code?
+- **AI Food Scanner**: Snap a photo or upload an image to get an instant analysis of your meal.
+- **Detailed Nutrition Facts**: Get calorie counts, macronutrients (Protein, Carbs, Fats), and a health score (0-100).
+- **Smart Context**: Add your own notes (e.g., "extra cheese", "cooked in olive oil") to refine the AI's analysis.
+- **Gamified Experience**: Track your "Health Score" and build healthy habits with a visual and engaging interface.
+- **Responsive Design**: A modern, mobile-friendly UI built with React and Tailwind CSS.
 
-There are several ways of editing your application.
+## 🛠️ Tech Stack
 
-**Use Lovable**
+### Frontend
+- **React**: UI library for building the interface.
+- **Vite**: Fast build tool and development server.
+- **Tailwind CSS**: Utility-first CSS framework for styling.
+- **Shadcn UI**: Reusable UI components.
+- **Framer Motion**: For smooth animations and transitions.
+- **React Router**: For client-side routing.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/dae6270b-48e1-4bb9-b617-b28ec8c61f4f) and start prompting.
+### Backend
+- **Node.js & Express**: Server-side runtime and framework.
+- **Google Gemini API**: Advanced AI model for image analysis.
+- **Dotenv**: For environment variable management.
 
-Changes made via Lovable will be committed automatically to this repo.
+## 📦 Installation & Setup
 
-**Use your preferred IDE**
+### Prerequisites
+- Node.js (v18 or higher)
+- npm (Node Package Manager)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+### 1. Clone the Repository
+```bash
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+cd clarity-bite
 ```
 
-**Edit a file directly in GitHub**
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### 3. Environment Setup
+Create a `.env` file in the root directory and add your Gemini API key (optional if hardcoded for demo, but recommended for security):
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+*Note: The current implementation may have the key configured directly in `server.js` for demonstration purposes.*
 
-**Use GitHub Codespaces**
+### 4. Run the Application
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+You need to run both the frontend and the backend servers.
 
-## What technologies are used for this project?
+**Start the Backend Server:**
+```bash
+npm run server
+```
+*The server runs on `http://localhost:5000`*
 
-This project is built with:
+**Start the Frontend Development Server:**
+```bash
+npm run dev
+```
+*The app will be available at `http://localhost:8080` (or the port shown in your terminal)*
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📖 Usage
 
-## How can I deploy this project?
+1.  Open the application in your browser.
+2.  Click on **"Try AI Food Scanner"** or navigate to the Scan page.
+3.  Upload a photo of your food.
+4.  (Optional) Add any hidden details in the "Additional Context" box.
+5.  Click **"Analyze Food"**.
+6.  View your nutritional breakdown and health score!
 
-Simply open [Lovable](https://lovable.dev/projects/dae6270b-48e1-4bb9-b617-b28ec8c61f4f) and click on Share -> Publish.
+## 🤝 Contributing
 
-## Can I connect a custom domain to my Lovable project?
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Yes, you can!
+## 📄 License
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is licensed under the MIT License.
