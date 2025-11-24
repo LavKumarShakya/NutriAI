@@ -29,7 +29,7 @@ export const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection("hero")}>
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
           <Leaf className="w-6 h-6 text-primary" />
           <span className="text-xl font-bold text-foreground">NutriAI</span>
         </div>

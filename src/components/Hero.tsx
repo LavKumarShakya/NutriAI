@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Camera, Zap, TrendingUp, Award } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import saladBowl from "@/assets/salad-bowl.png";
 
 export const Hero = () => {
+  const navigate = useNavigate();
+  
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
@@ -137,7 +140,7 @@ export const Hero = () => {
             <Button
               size="lg"
               className="rounded-full gap-2 text-lg px-10 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all"
-              onClick={() => scrollToSection("cta")}
+              onClick={() => navigate("/scan")}
             >
               <Camera className="w-5 h-5" />
               Start Scanning
