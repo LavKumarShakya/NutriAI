@@ -6,7 +6,7 @@ import saladBowl from "@/assets/salad-bowl.png";
 
 export const Hero = () => {
   const navigate = useNavigate();
-  
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
@@ -42,7 +42,7 @@ export const Hero = () => {
         style={{ width: '600px', height: '600px', y: '-40%' }}
         animate={{ rotate: 360 }}
         transition={{
-          duration: 12,
+          duration: 36,
           repeat: Infinity,
           ease: "linear"
         }}

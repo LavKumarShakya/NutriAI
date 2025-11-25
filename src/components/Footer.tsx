@@ -9,9 +9,9 @@ export const Footer = () => {
             <Leaf className="w-6 h-6 text-primary" />
             <span className="text-xl font-bold text-foreground">NutriAI</span>
           </div>
-          
+
           <div className="flex gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-primary transition-colors">About</a>
+            <a href="/about" className="hover:text-primary transition-colors">About</a>
             <a href="#" className="hover:text-primary transition-colors">Privacy</a>
             <a href="#" className="hover:text-primary transition-colors">Terms</a>
             <a href="#" className="hover:text-primary transition-colors">Contact</a>
@@ -29,7 +29,7 @@ export const Footer = () => {
             </a>
           </div>
         </div>
-        
+
         <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <p>© 2024 NutriAI. Empowering healthier choices through AI.</p>
         </div>

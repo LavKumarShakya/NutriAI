@@ -220,11 +220,26 @@ const FoodScan = () => {
                         <div className="flex justify-between items-start mb-6">
                           <div>
                             <div className="text-sm text-muted-foreground uppercase tracking-wider font-semibold mb-1">Detected Food</div>
-                            <h2 className="text-3xl font-bold text-foreground capitalize">{result.food_name || "Unknown Food"}</h2>
+                            <h2 className="text-3xl font-bold text-foreground capitalize">{result.food_identified || "Unknown Food"}</h2>
+                            {result.usda_fdc_id && (
+                              <div className="text-xs text-muted-foreground mt-1">
+                                USDA FDC ID: <span className="font-mono">{result.usda_fdc_id}</span>
+                              </div>
+                            )}
+                            {result.portion_size_assumed && (
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Portion: {result.portion_size_assumed}
+                              </div>
+                            )}
+                            {result.assumptions?.confidence !== undefined && (
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Confidence: {(result.assumptions.confidence * 100).toFixed(0)}%
+                              </div>
+                            )}
                           </div>
                           <div className={`px-4 py-2 rounded-full font-bold text-lg ${(result.health_score || 0) >= 70 ? 'bg-green-500/10 text-green-500' :
-                              (result.health_score || 0) >= 40 ? 'bg-yellow-500/10 text-yellow-500' :
-                                'bg-red-500/10 text-red-500'
+                            (result.health_score || 0) >= 40 ? 'bg-yellow-500/10 text-yellow-500' :
+                              'bg-red-500/10 text-red-500'
                             }`}>
                             {result.health_score || 0}/100 Score
                           </div>
@@ -247,15 +262,15 @@ const FoodScan = () => {
                         <div className="grid grid-cols-3 gap-4 mb-8">
                           <div className="bg-secondary/20 p-4 rounded-2xl border border-border/50 text-center">
                             <div className="text-sm text-muted-foreground mb-1">Protein</div>
-                            <div className="text-xl font-bold text-foreground">{result.macros?.protein || "0g"}</div>
+                            <div className="text-xl font-bold text-foreground">{result.macronutrients?.protein_g || 0}g</div>
                           </div>
                           <div className="bg-secondary/20 p-4 rounded-2xl border border-border/50 text-center">
                             <div className="text-sm text-muted-foreground mb-1">Carbs</div>
-                            <div className="text-xl font-bold text-foreground">{result.macros?.carbs || "0g"}</div>
+                            <div className="text-xl font-bold text-foreground">{result.macronutrients?.carbs_g || 0}g</div>
                           </div>
                           <div className="bg-secondary/20 p-4 rounded-2xl border border-border/50 text-center">
                             <div className="text-sm text-muted-foreground mb-1">Fats</div>
-                            <div className="text-xl font-bold text-foreground">{result.macros?.fats || "0g"}</div>
+                            <div className="text-xl font-bold text-foreground">{result.macronutrients?.fats_g || 0}g</div>
                           </div>
                         </div>
 
@@ -263,11 +278,27 @@ const FoodScan = () => {
                         <div className="bg-primary/5 rounded-2xl p-6 border border-primary/10">
                           <div className="flex items-center gap-2 mb-3 text-primary font-semibold">
                             <Info className="w-5 h-5" />
-                            AI Analysis
+                            Health Rationale
                           </div>
                           <p className="text-muted-foreground leading-relaxed">
-                            {result.message || "No analysis available."}
+                            {result.health_rationale || "No analysis available."}
                           </p>
+                          {result.micronutrients?.other_key_micros && (
+                            <div className="mt-4 pt-4 border-t border-primary/10">
+                              <p className="text-sm text-muted-foreground">
+                                <span className="font-semibold text-primary/80">Key Micronutrients: </span>
+                                {result.micronutrients.other_key_micros}
+                              </p>
+                            </div>
+                          )}
+                          {result.assumptions?.why_this_food_item && (
+                            <div className="mt-4 pt-4 border-t border-primary/10">
+                              <p className="text-sm text-muted-foreground">
+                                <span className="font-semibold text-primary/80">Why this item: </span>
+                                {result.assumptions.why_this_food_item}
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </div>
 

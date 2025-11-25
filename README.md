@@ -1,14 +1,33 @@
-# Clarity Bite - AI Nutrition Advisor
+# NutriAI - AI Nutrition Advisor
 
-Clarity Bite is an intelligent nutrition assistant that helps you track your diet by simply scanning your food. Powered by Google's Gemini AI, it analyzes food images to provide instant nutritional breakdowns, health scores, and personalized insights.
+NutriAI is an intelligent nutrition assistant that helps you track your diet by simply scanning your food. Powered by Google's Gemini AI, it analyzes food images to provide instant nutritional breakdowns, health scores, and personalized insights.
 
 ## 🚀 Features
 
 - **AI Food Scanner**: Snap a photo or upload an image to get an instant analysis of your meal.
-- **Detailed Nutrition Facts**: Get calorie counts, macronutrients (Protein, Carbs, Fats), and a health score (0-100).
+- **USDA-Based Identification**: Every food item is matched to a specific USDA FoodData Central entry with FDC ID for accuracy.
+- **Visual Portion Detection**: AI determines portion size based on what's visible in the image (whole item, single serving, or multiple units).
+- **Deterministic Analysis**: Same food image produces consistent, repeatable results every time.
+- **Detailed Nutrition Facts**: Get calorie counts, macronutrients (Protein, Carbs, Fats), fiber, sodium, and key micronutrients.
+- **WHO/DGA Health Scoring**: Health score (0-100) based on WHO Healthy Diet Guidelines and Dietary Guidelines for Americans.
 - **Smart Context**: Add your own notes (e.g., "extra cheese", "cooked in olive oil") to refine the AI's analysis.
-- **Gamified Experience**: Track your "Health Score" and build healthy habits with a visual and engaging interface.
+- **Transparency**: See the AI's confidence level, USDA item selection rationale, and portion assumptions.
+- **About Us Page**: Learn more about our mission, story, and core values.
+- **User-Friendly Navigation**: Easy-to-use interface with a "Back to Top" button for smooth scrolling.
 - **Responsive Design**: A modern, mobile-friendly UI built with React and Tailwind CSS.
+
+## 🔬 Science & Data
+
+NutriAI's analysis is grounded in authoritative scientific sources to ensure accuracy and reliability:
+
+1.  **USDA FoodData Central**: Our primary source for standardized calorie, macronutrient, and micronutrient values. Every food item is matched to a specific USDA FDC ID for traceability.
+2.  **WHO Healthy Diet Guidelines**: Used to calculate the Health Score (0-100), evaluating meals based on limits for sugar, salt, and saturated fats.
+3.  **Dietary Guidelines for Americans 2020-2025**: Provides the framework for our overall dietary quality assessments and balance recommendations.
+
+### AI Capabilities
+- **Deterministic Behavior**: Same image produces identical results for consistency
+- **Visual Portion Detection**: Determines serving size based on image content (whole item, single serving, or counted units)
+- **Transparency**: Provides confidence scores, USDA item selection rationale, and portion assumptions
 
 ## 🛠️ Tech Stack
 
@@ -43,7 +62,7 @@ npm install
 ```
 
 ### 3. Environment Setup
-Create a `.env` file in the root directory and add your Gemini API key (optional if hardcoded for demo, but recommended for security):
+Create a `.env` file in the root directory and add your Gemini API key:
 ```env
 GEMINI_API_KEY=your_api_key_here
 ```
