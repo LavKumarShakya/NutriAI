@@ -26,7 +26,7 @@ const painPoints = [
 
 export const PainPoints = () => {
   return (
-    <section className="py-20 px-4 bg-muted/30">
+    <section id="why-ai" className="py-20 px-4 bg-muted/30">
       <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

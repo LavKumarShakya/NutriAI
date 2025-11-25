@@ -1,25 +1,55 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Leaf, Moon, Sun, User } from "lucide-react";
+import { Leaf, Moon, Sun, User, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useNavigate } from "react-router-dom";
+import { auth } from "@/lib/firebase";
+import { onAuthStateChanged, signOut, User as FirebaseUser } from "firebase/auth";
+import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState<FirebaseUser | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      unsubscribe();
+    };
   }, []);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Logged out successfully");
+      navigate("/");
+    } catch (error) {
+      toast.error("Failed to log out");
+    }
   };
 
   return (
@@ -33,22 +63,27 @@ export const Navbar = () => {
           <span className="text-xl font-bold text-foreground">NutriAI</span>
         </div>
 
-        <div className="hidden md:flex items-center gap-6">
-          <button onClick={() => navigate("/about")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            About
+        <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+          <button onClick={() => navigate("/")} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Home
           </button>
-          <button onClick={() => scrollToSection("how-it-works")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            How It Works
-          </button>
-          <button onClick={() => scrollToSection("features")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <button onClick={() => scrollToSection("features")} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Features
           </button>
-          <button onClick={() => scrollToSection("gamification")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Track Progress
+          <button onClick={() => scrollToSection("why-ai")} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Why AI?
           </button>
-          <button onClick={() => scrollToSection("testimonials")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Reviews
+          <button onClick={() => navigate("/scan")} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Scan
           </button>
+          <button onClick={() => navigate("/blog")} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Blogs
+          </button>
+          {!user && (
+            <button onClick={() => navigate("/login")} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              Login
+            </button>
+          )}
         </div>
 
         <div className="flex items-center gap-3">
@@ -66,18 +101,46 @@ export const Navbar = () => {
                   <Moon className="h-5 w-5 text-foreground transition-transform rotate-0 scale-100" />
                 )}
               </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => navigate("/profile")}
-                className="rounded-full border-border/50 hover:bg-accent/50 hover:border-primary/30 transition-all duration-300"
-              >
-                <User className="h-5 w-5 text-foreground" />
-              </Button>
+
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-full border-border/50 hover:bg-accent/50 hover:border-primary/30 transition-all duration-300"
+                    >
+                      <User className="h-5 w-5 text-foreground" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>
+                      {user.displayName || "My Account"}
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate("/profile")}>
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => navigate("/login")}
+                  className="rounded-full border-border/50 hover:bg-accent/50 hover:border-primary/30 transition-all duration-300 md:hidden"
+                >
+                  <User className="h-5 w-5 text-foreground" />
+                </Button>
+              )}
             </>
           )}
-          <Button onClick={() => scrollToSection("cta")} className="rounded-full">
-            Try It Free
+          <Button onClick={() => navigate("/scan")} className="rounded-full px-6">
+            Start Scan
           </Button>
         </div>
       </div>

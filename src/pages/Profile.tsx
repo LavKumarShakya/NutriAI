@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -8,18 +8,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  User, 
-  Target, 
-  Activity, 
-  TrendingUp, 
-  Edit2, 
+import {
+  User,
+  Target,
+  Activity,
+  TrendingUp,
+  Edit2,
   Camera,
   Apple,
   Utensils,
   Salad,
   Coffee,
-  Leaf
+  Leaf,
+  Loader2
 } from "lucide-react";
 import {
   Select,
@@ -28,11 +29,74 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { auth, db } from "@/lib/firebase";
+import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [userData, setUserData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const navigate = useNavigate();
 
-  // Mock data
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        try {
+          const docRef = doc(db, "users", currentUser.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setUserData(docSnap.data());
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        navigate("/login");
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setUserData((prev: any) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSelectChange = (id: string, value: string) => {
+    setUserData((prev: any) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSave = async () => {
+    if (!user) return;
+    setSaving(true);
+    try {
+      const docRef = doc(db, "users", user.uid);
+      await updateDoc(docRef, {
+        ...userData,
+        age: Number(userData.age),
+        height: Number(userData.height),
+        weight: Number(userData.weight),
+        updatedAt: new Date(),
+      });
+      toast.success("Profile updated successfully!");
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error("Failed to update profile.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Mock data for meals (could be moved to Firestore later)
   const recentMeals = [
     { id: 1, name: "Grilled Chicken Salad", calories: 320, score: 92, time: "12:30 PM" },
     { id: 2, name: "Oatmeal with Berries", calories: 280, score: 88, time: "8:00 AM" },
@@ -45,6 +109,16 @@ const Profile = () => {
     { Icon: Coffee, delay: 1, x: -30, y: 20 },
     { Icon: Leaf, delay: 1.5, x: 25, y: 25 },
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!user) return null;
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -125,8 +199,10 @@ const Profile = () => {
                 >
                   <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl group-hover:blur-3xl transition-all duration-500" />
                   <Avatar className="w-32 h-32 border-4 border-primary/20 relative z-10">
-                    <AvatarImage src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400" />
-                    <AvatarFallback className="text-3xl bg-primary/10">JD</AvatarFallback>
+                    <AvatarImage src={user.photoURL || "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400"} />
+                    <AvatarFallback className="text-3xl bg-primary/10">
+                      {user.displayName ? user.displayName.charAt(0).toUpperCase() : "U"}
+                    </AvatarFallback>
                   </Avatar>
                   <motion.div
                     className="absolute -bottom-2 -right-2 bg-card border-2 border-primary rounded-full p-2 cursor-pointer hover:bg-primary/10 transition-colors z-20"
@@ -140,18 +216,23 @@ const Profile = () => {
                 {/* Profile Info */}
                 <div className="flex-1 text-center md:text-left">
                   <div className="flex items-center gap-3 justify-center md:justify-start mb-2">
-                    <h1 className="text-3xl font-bold text-foreground">John Doe</h1>
+                    <h1 className="text-3xl font-bold text-foreground">{user.displayName || "User"}</h1>
                     <User className="w-5 h-5 text-primary" />
                   </div>
                   <p className="text-muted-foreground mb-4 max-w-xl">
-                    Fitness enthusiast on a journey to better health. Passionate about wholesome nutrition and mindful eating.
+                    {userData?.bio || "No bio added yet."}
                   </p>
                   <Button
-                    onClick={() => setIsEditing(!isEditing)}
+                    onClick={() => isEditing ? handleSave() : setIsEditing(true)}
                     variant={isEditing ? "default" : "outline"}
                     className="group"
+                    disabled={saving}
                   >
-                    <Edit2 className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform" />
+                    {saving ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Edit2 className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform" />
+                    )}
                     {isEditing ? "Save Profile" : "Edit Profile"}
                   </Button>
                 </div>
@@ -181,8 +262,8 @@ const Profile = () => {
                       <Label htmlFor="name">Full Name</Label>
                       <Input
                         id="name"
-                        defaultValue="John Doe"
-                        disabled={!isEditing}
+                        defaultValue={user.displayName || ""}
+                        disabled={true} // Name update via auth profile update is separate
                         className="mt-1 bg-background/50 focus:bg-background transition-colors"
                       />
                     </div>
@@ -190,11 +271,36 @@ const Profile = () => {
                       <Label htmlFor="bio">Bio</Label>
                       <Textarea
                         id="bio"
-                        defaultValue="Fitness enthusiast on a journey to better health. Passionate about wholesome nutrition and mindful eating."
+                        value={userData?.bio || ""}
+                        onChange={handleInputChange}
                         disabled={!isEditing}
                         className="mt-1 bg-background/50 focus:bg-background transition-colors"
                         rows={3}
                       />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="age">Age</Label>
+                        <Input
+                          id="age"
+                          type="number"
+                          value={userData?.age || ""}
+                          onChange={handleInputChange}
+                          disabled={!isEditing}
+                          className="mt-1 bg-background/50 focus:bg-background transition-colors"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="height">Height (cm)</Label>
+                        <Input
+                          id="height"
+                          type="number"
+                          value={userData?.height || ""}
+                          onChange={handleInputChange}
+                          disabled={!isEditing}
+                          className="mt-1 bg-background/50 focus:bg-background transition-colors"
+                        />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -216,7 +322,11 @@ const Profile = () => {
                   <CardContent className="space-y-4">
                     <div>
                       <Label htmlFor="goal">Primary Goal</Label>
-                      <Select defaultValue="weight-loss" disabled={!isEditing}>
+                      <Select
+                        value={userData?.goal || "weight-loss"}
+                        onValueChange={(val) => handleSelectChange("goal", val)}
+                        disabled={!isEditing}
+                      >
                         <SelectTrigger id="goal" className="mt-1 bg-background/50 focus:bg-background">
                           <SelectValue placeholder="Select your goal" />
                         </SelectTrigger>
@@ -229,9 +339,13 @@ const Profile = () => {
                       </Select>
                     </div>
                     <div>
-                      <Label htmlFor="diet-type">Diet Type</Label>
-                      <Select defaultValue="balanced" disabled={!isEditing}>
-                        <SelectTrigger id="diet-type" className="mt-1 bg-background/50 focus:bg-background">
+                      <Label htmlFor="dietType">Diet Type</Label>
+                      <Select
+                        value={userData?.dietType || "balanced"}
+                        onValueChange={(val) => handleSelectChange("dietType", val)}
+                        disabled={!isEditing}
+                      >
+                        <SelectTrigger id="dietType" className="mt-1 bg-background/50 focus:bg-background">
                           <SelectValue placeholder="Select diet type" />
                         </SelectTrigger>
                         <SelectContent>
@@ -267,17 +381,18 @@ const Profile = () => {
                         <Input
                           id="weight"
                           type="number"
-                          defaultValue="75"
+                          value={userData?.weight || ""}
+                          onChange={handleInputChange}
                           disabled={!isEditing}
                           className="mt-1 bg-background/50 focus:bg-background transition-colors"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="target-weight">Target Weight (kg)</Label>
+                        <Label htmlFor="targetWeight">Target Weight (kg)</Label>
                         <Input
-                          id="target-weight"
+                          id="targetWeight" // Changed ID to match potential DB field if needed, or keep consistent
                           type="number"
-                          defaultValue="70"
+                          defaultValue="70" // This might need a DB field too
                           disabled={!isEditing}
                           className="mt-1 bg-background/50 focus:bg-background transition-colors"
                         />

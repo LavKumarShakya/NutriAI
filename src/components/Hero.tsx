@@ -91,7 +91,7 @@ export const Hero = () => {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 pt-40 pb-20">
         <div className="text-center space-y-8">
           {/* Badge */}
           <motion.div
