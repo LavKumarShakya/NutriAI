@@ -2,22 +2,26 @@ import express from 'express';
 import cors from 'cors';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
+// Serve static files from the React app build directory
+app.use(express.static(path.join(__dirname, 'dist')));
+
 // In a real app, use process.env.API_KEY
 const API_KEY = process.env.GEMINI_API_KEY;
 const genai = new GoogleGenerativeAI(API_KEY);
-
-app.get('/', (req, res) => {
-    res.send('AI Nutrition Analyzer Node.js Backend is Running!');
-});
 
 app.post('/analyze', async (req, res) => {
     try {
@@ -190,6 +194,12 @@ app.post('/analyze', async (req, res) => {
         console.error('Error analyzing image:', error);
         res.status(500).json({ error: error.message });
     }
+});
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get(/(.*)/, (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(port, () => {
