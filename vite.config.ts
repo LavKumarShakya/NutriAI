@@ -7,6 +7,9 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      "/analyze": "http://localhost:3000",
+    },
   },
   plugins: [react()],
   resolve: {

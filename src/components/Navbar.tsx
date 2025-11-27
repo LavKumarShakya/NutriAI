@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Leaf, Moon, Sun, User, LogOut } from "lucide-react";
+import { Leaf, Moon, Sun, User, LogOut, Camera } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useNavigate } from "react-router-dom";
 import { auth } from "@/lib/firebase";
@@ -57,7 +57,7 @@ export const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-background/80 backdrop-blur-lg border-b border-border" : "bg-transparent"
         }`}
     >
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="container mx-auto px-2 sm:px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
           <Leaf className="w-6 h-6 text-primary" />
           <span className="text-xl font-bold text-foreground">NutriAI</span>
@@ -86,7 +86,7 @@ export const Navbar = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {mounted && (
             <>
               <Button
@@ -139,8 +139,9 @@ export const Navbar = () => {
               )}
             </>
           )}
-          <Button onClick={() => navigate("/scan")} className="rounded-full px-6">
-            Start Scan
+          <Button onClick={() => navigate("/scan")} className="rounded-full px-3 sm:px-6">
+            <Camera className="w-4 h-4 sm:mr-2" />
+            <span className="hidden sm:inline">Start Scan</span>
           </Button>
         </div>
       </div>
