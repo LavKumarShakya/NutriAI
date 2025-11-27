@@ -38,8 +38,8 @@ export const Hero = () => {
     <div id="hero" className="relative top-[-80px] min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/10">
       {/* Realistic Salad Bowl with Slow Rotation */}
       <motion.div
-        className="absolute -right-64 top-1/2 z-20 pointer-events-none overflow-hidden"
-        style={{ width: '600px', height: '600px', y: '-40%' }}
+        className="absolute -right-32 md:-right-64 top-1/2 z-20 pointer-events-none overflow-hidden w-[300px] h-[300px] md:w-[600px] md:h-[600px]"
+        style={{ y: '-40%' }}
         animate={{ rotate: 360 }}
         transition={{
           duration: 36,
