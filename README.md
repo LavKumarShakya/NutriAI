@@ -61,12 +61,6 @@ cd clarity-bite
 npm install
 ```
 
-### 3. Environment Setup
-Create a `.env` file in the root directory and add your Gemini API key:
-```env
-GEMINI_API_KEY=your_api_key_here
-```
-*Note: The current implementation may have the key configured directly in `server.js` for demonstration purposes.*
 
 ### 4. Run the Application
 
@@ -76,7 +70,7 @@ You need to run both the frontend and the backend servers.
 ```bash
 npm run server
 ```
-*The server runs on `http://localhost:5000`*
+
 
 **Start the Frontend Development Server:**
 ```bash
