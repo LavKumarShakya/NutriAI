@@ -91,23 +91,6 @@ npm run dev
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 🚀 Deployment on Render
-
-1.  **Create a New Web Service**: Connect your GitHub repository.
-2.  **Settings**:
-    *   **Build Command**: `npm install && npm run build`
-    *   **Start Command**: `npm start`
-3.  **Environment Variables**:
-    Add the following variables in the Render Dashboard:
-    *   `GEMINI_API_KEY`: Your Google Gemini API Key
-    *   `VITE_FIREBASE_API_KEY`: Your Firebase API Key
-    *   `VITE_FIREBASE_AUTH_DOMAIN`: Your Firebase Auth Domain
-    *   `VITE_FIREBASE_PROJECT_ID`: Your Firebase Project ID
-    *   `VITE_FIREBASE_STORAGE_BUCKET`: Your Firebase Storage Bucket
-    *   `VITE_FIREBASE_MESSAGING_SENDER_ID`: Your Firebase Messaging Sender ID
-    *   `VITE_FIREBASE_APP_ID`: Your Firebase App ID
-    *   `VITE_FIREBASE_MEASUREMENT_ID`: Your Firebase Measurement ID
-
 ## 📄 License
 
 This project is licensed under the MIT License.
